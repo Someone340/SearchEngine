@@ -1,6 +1,6 @@
 #include "searchServer.h"
 
-void queueSearch(const std::string& queue, InvertedIndex& _index,
+void SearchServer::queueSearch(const std::string& queue, InvertedIndex& _index,
             std::mutex& relativeRelevanceLock, std::vector<std::vector<RelativeIndex>>& relativeRelevance) {
 
     std::vector<std::string> words;
@@ -103,7 +103,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search
     std::vector<std::thread> threadsVector;
 
     for (auto& queue : queries_input) {
-        threadsVector.push_back(std::thread(&queueSearch, queue, std::ref(_index), std::ref(relativeRelevanceLock), std::ref(relativeRelevance)));
+        threadsVector.push_back(std::thread(&SearchServer::queueSearch, this, queue, std::ref(_index), std::ref(relativeRelevanceLock), std::ref(relativeRelevance)));
     }
 
     for (auto& curThread : threadsVector) {
