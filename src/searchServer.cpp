@@ -1,6 +1,6 @@
 #include "searchServer.h"
 
-void queueSearch(std::string queue, InvertedIndex& _index,
+void queueSearch(const std::string& queue, InvertedIndex& _index,
             std::mutex& relativeRelevanceLock, std::vector<std::vector<RelativeIndex>>& relativeRelevance) {
 
     std::vector<std::string> words;
