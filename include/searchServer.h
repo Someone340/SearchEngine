@@ -22,6 +22,8 @@ public:
     запросе
     */
     SearchServer(InvertedIndex& idx) : _index(idx){ };
+    void queueSearch(const std::string& queue, InvertedIndex& _index,
+            std::mutex& relativeRelevanceLock, std::vector<std::vector<RelativeIndex>>& relativeRelevance);
     void updateMaxResponse(const int& response);
     /**
     * Метод обработки поисковых запросов
