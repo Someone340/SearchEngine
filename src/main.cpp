@@ -42,13 +42,6 @@ int main(int, char**){
 
         convert->putAnswers(result);
 
-        std::ifstream answer("answer.json");
-        if (answer.is_open())
-            cout << "Results were saved in answer.json" << endl;
-        else
-            cout << "Couldn't save results" << endl;
-        answer.close();
-
         delete convert;
     }
     catch(const ConfigIsMissingError &x) {

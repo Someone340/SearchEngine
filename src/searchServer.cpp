@@ -1,7 +1,7 @@
 #include "searchServer.h"
 
-void queueSearch(std::string queue, InvertedIndex& _index,
-            std::mutex& relativeRelevanceLock, std::vector<std::vector<RelativeIndex>>& relativeRelevance) {
+void SearchServer::queueSearch(const std::string& queue, InvertedIndex& _index,
+            std::mutex& relativeRelevanceLock, std::vector<std::vector<RelativeIndex>>& relativeRelevance) const {
 
     std::vector<std::string> words;
     std::vector<RelativeIndex> curRelativeRelevance;
@@ -91,7 +91,7 @@ void queueSearch(std::string queue, InvertedIndex& _index,
     relativeRelevanceLock.unlock();
 }
 
-void SearchServer::updateMaxResponse(const int& maxResponse){
+void SearchServer::updateMaxResponse(const int& maxResponse) {
     max_response = maxResponse;
 };
 
@@ -103,7 +103,7 @@ std::vector<std::vector<RelativeIndex>> SearchServer::search
     std::vector<std::thread> threadsVector;
 
     for (auto& queue : queries_input) {
-        threadsVector.push_back(std::thread(&queueSearch, queue, std::ref(_index), std::ref(relativeRelevanceLock), std::ref(relativeRelevance)));
+        threadsVector.push_back(std::thread(&SearchServer::queueSearch, this, queue, std::ref(_index), std::ref(relativeRelevanceLock), std::ref(relativeRelevance)));
     }
 
     for (auto& curThread : threadsVector) {

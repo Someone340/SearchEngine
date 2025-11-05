@@ -4,7 +4,7 @@
 #include <exception>
 
 
-void ConverterJSON::setup(){
+void ConverterJSON::setup() {
     std::ifstream fileConfig(configFile);
     if (fileConfig.is_open()){
         fileConfig >> config;
@@ -21,25 +21,25 @@ void ConverterJSON::setup(){
     }
 };
 
-std::string ConverterJSON::GetVersion() {
+std::string ConverterJSON::GetVersion() const {
     return config[configMain][configVersion];
 }
 
-std::string ConverterJSON::GetName() {
+std::string ConverterJSON::GetName() const {
     return config[configMain][configName];
 }
 
-std::vector<std::string> ConverterJSON::GetTextDocuments(){
+std::vector<std::string> ConverterJSON::GetTextDocuments() const {
     return config[configFiles];
 }
 
-int ConverterJSON::GetResponsesLimit(){
+int ConverterJSON::GetResponsesLimit() const {
     if (config[configMain].find(configMaxResponses) != config[configMain].end())
         return config[configMain][configMaxResponses];
     return 5;
 }
 
-std::vector<std::string> ConverterJSON::GetRequests(){
+std::vector<std::string> ConverterJSON::GetRequests() const {
     return requests[requestsList];
 }
 
@@ -83,4 +83,11 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>>& answers)
 
     file << dict;
     file.close();
+
+    std::ifstream answer("answer.json");
+    if (answer.is_open())
+        std::cout << "Results were saved in answer.json" << std::endl;
+    else
+        std::cout << "Couldn't save results" << std::endl;
+    answer.close();
 }
