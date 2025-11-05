@@ -2,17 +2,15 @@
 #include "exceptions.h"
 #include <fstream>
 #include <exception>
-#define CONFIGMAIN
-
 
 
 void ConverterJSON::setup(){
-    std::ifstream fileConfig("config.json");
+    std::ifstream fileConfig(configFile);
     if (fileConfig.is_open()){
         fileConfig >> config;
         fileConfig.close();
         if (config.contains(configMain)) {
-            std::ifstream fileRequest("requests.json");
+            std::ifstream fileRequest(requestsFile);
             fileRequest >> requests;
             fileRequest.close();
         } else {
@@ -46,7 +44,7 @@ std::vector<std::string> ConverterJSON::GetRequests(){
 }
 
 void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>>& answers){
-    std::ofstream file("answer.json");
+    std::ofstream file(answerFile);
     nlohmann::json dict;
 
     int request = 1;

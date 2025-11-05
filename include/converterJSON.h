@@ -11,6 +11,9 @@
 class ConverterJSON {
     nlohmann::json config = nullptr;
     nlohmann::json requests = nullptr;
+    const std::string configFile = "config.json";
+    const std::string requestsFile = "requests.json";
+    const std::string answerFile = "answer.json";
     const std::string configMain = "config";
     const std::string configVersion = "version";
     const std::string configName = "name";
