@@ -10,7 +10,7 @@
 #define CURRENT_VERSION "0.1"
 using namespace std;
 
-void versionCheck(string configVersion) {
+void versionCheck(const string& configVersion) {
     if (configVersion != CURRENT_VERSION)
         throw IncorrectVersionError();
 }
@@ -42,7 +42,13 @@ int main(int, char**){
 
         convert->putAnswers(result);
 
-        cout << "Results were saved in answer.json" << endl;
+        std::ifstream answer("answer.json");
+        if (answer.is_open())
+            cout << "Results were saved in answer.json" << endl;
+        else
+            cout << "Couldn't save results" << endl;
+        answer.close();
+
         delete convert;
     }
     catch(const ConfigIsMissingError &x) {

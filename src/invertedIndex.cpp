@@ -1,6 +1,6 @@
 #include "invertedIndex.h"
 
-void InvertedIndex::UpdateDocumentBase(std::vector<std::string> input_docs) {
+void InvertedIndex::UpdateDocumentBase(std::vector<std::string>& input_docs) {
     std::string curWord;
     for (size_t i = 0; i < input_docs.size(); i++) {
         for (size_t j = 0; j <= input_docs[i].length(); j++) {

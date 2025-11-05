@@ -2,6 +2,8 @@
 #include "exceptions.h"
 #include <fstream>
 #include <exception>
+#define CONFIGMAIN
+
 
 
 void ConverterJSON::setup(){
@@ -9,7 +11,7 @@ void ConverterJSON::setup(){
     if (fileConfig.is_open()){
         fileConfig >> config;
         fileConfig.close();
-        if (config.contains("config")) {
+        if (config.contains(configMain)) {
             std::ifstream fileRequest("requests.json");
             fileRequest >> requests;
             fileRequest.close();
@@ -22,28 +24,28 @@ void ConverterJSON::setup(){
 };
 
 std::string ConverterJSON::GetVersion() {
-    return config["config"]["version"];
+    return config[configMain][configVersion];
 }
 
 std::string ConverterJSON::GetName() {
-    return config["config"]["name"];
+    return config[configMain][configName];
 }
 
 std::vector<std::string> ConverterJSON::GetTextDocuments(){
-    return config["files"];
+    return config[configFiles];
 }
 
 int ConverterJSON::GetResponsesLimit(){
-    if (config["config"].find("max_responses") != config["config"].end())
-        return config["config"]["max_responses"];
+    if (config[configMain].find(configMaxResponses) != config[configMain].end())
+        return config[configMain][configMaxResponses];
     return 5;
 }
 
 std::vector<std::string> ConverterJSON::GetRequests(){
-    return requests["requests"];
+    return requests[requestsList];
 }
 
-void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> answers){
+void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>>& answers){
     std::ofstream file("answer.json");
     nlohmann::json dict;
 
@@ -60,22 +62,22 @@ void ConverterJSON::putAnswers(std::vector<std::vector<RelativeIndex>> answers){
 
 
         if (!answer.empty()) {
-            dict["answers"][curRequest]["result"] = true;
+            dict[answersMain][curRequest][answersResult] = true;
             //std::map<size_t, float> m;
             nlohmann::json pair;
             if (answer.size() > 1) {
                 
                 for (auto& curAnswer : answer) {
-                    pair += nlohmann::json::object({ {"docid", curAnswer.doc_id}, {"rank", round(curAnswer.rank*1000)/1000} });
+                    pair += nlohmann::json::object({ {answersDocid, curAnswer.doc_id}, {answersRank, round(curAnswer.rank*1000)/1000} });
                 }
-                dict["answers"][curRequest]["relevance"] = pair;
+                dict[answersMain][curRequest][answersRelevance] = pair;
             } else {
-                pair = nlohmann::json::object({ {"docid", answer[0].doc_id}, {"rank", round(answer[0].rank*1000)/1000} });
-                dict["answers"][curRequest] = pair;
+                pair = nlohmann::json::object({ {answersDocid, answer[0].doc_id}, {answersRank, round(answer[0].rank*1000)/1000} });
+                dict[answersMain][curRequest] = pair;
             }
 
         } else {
-            dict["answers"][curRequest]["result"] = false;
+            dict[answersMain][curRequest][answersResult] = false;
         }
 
         request++;

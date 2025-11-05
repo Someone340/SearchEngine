@@ -22,7 +22,7 @@ public:
     запросе
     */
     SearchServer(InvertedIndex& idx) : _index(idx){ };
-    void updateMaxResponse(int response);
+    void updateMaxResponse(const int& response);
     /**
     * Метод обработки поисковых запросов
     * @param queries_input поисковые запросы взятые из файла

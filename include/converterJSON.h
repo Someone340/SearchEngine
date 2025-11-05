@@ -11,6 +11,18 @@
 class ConverterJSON {
     nlohmann::json config = nullptr;
     nlohmann::json requests = nullptr;
+    const std::string configMain = "config";
+    const std::string configVersion = "version";
+    const std::string configName = "name";
+    const std::string configFiles = "files";
+    const std::string configMaxResponses = "max_responses";
+    const std::string requestsList = "requests";
+    const std::string answersMain = "answers";
+    const std::string answersResult = "result";
+    const std::string answersRelevance = "relevance";
+    const std::string answersDocid = "docid";
+    const std::string answersRank = "rank";
+    
 public:
     ConverterJSON() {setup();};
 
@@ -37,5 +49,5 @@ public:
         /**
         * Положить в файл answers.json результаты поисковых запросов
         */
-    void putAnswers(std::vector<std::vector<RelativeIndex>> answers);
+    void putAnswers(std::vector<std::vector<RelativeIndex>>& answers);
 };
